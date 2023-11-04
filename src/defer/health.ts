@@ -1,37 +1,35 @@
 import { defer } from "@defer/client";
 
 const health = async () => {
-  const targets = [
-    {
-      name: "API",
-      host: "flamrdevs.deno.dev",
-    },
-    {
-      name: "Image",
-      host: "flamrdevs.cyclic.app",
-    },
-    {
-      name: "View",
-      host: "view.flamrdevs.workers.dev",
-    },
-  ];
+  const action = async (name: string, host: string) => {
+    let status: number = 0;
 
-  const action = async ({ name, host }: (typeof targets)[number]) => {
-    const data = {
-      name,
-      ok: false,
-    };
+    const now = Date.now();
 
     try {
-      console.time(name);
-      data.ok = (await fetch(`https://${host}/health`)).ok;
-      console.timeEnd(name);
-    } catch (error) {}
-
-    console.log(data);
+      status = (await fetch(`https://${host}/health`)).status;
+    } catch (error) {
+    } finally {
+      console.log(`[${name}] ${status} ${Date.now() - now}`);
+    }
   };
 
-  await Promise.all(targets.map((target) => action(target)));
+  await Promise.all(
+    [
+      {
+        name: "API",
+        host: "flamrdevs.deno.dev",
+      },
+      {
+        name: "Image",
+        host: "flamrdevs.cyclic.app",
+      },
+      {
+        name: "View",
+        host: "view.flamrdevs.workers.dev",
+      },
+    ].map(({ name, host }) => action(name, host))
+  );
 };
 
-export default defer.cron(health, "*/10 * * * *");
+export default defer.cron(health, "*/15 * * * *");
