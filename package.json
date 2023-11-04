@@ -1,0 +1,13 @@
+{
+  "name": "flamrdevs-task",
+  "private": true,
+  "engines": {
+    "node": "20.x"
+  },
+  "dependencies": {
+    "@defer/client": "^1.13.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}

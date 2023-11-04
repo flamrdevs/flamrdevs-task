@@ -1,0 +1,30 @@
+lockfileVersion: '6.0'
+
+dependencies:
+  '@defer/client':
+    specifier: ^1.13.0
+    version: 1.13.0
+
+devDependencies:
+  typescript:
+    specifier: ^5.2.2
+    version: 5.2.2
+
+packages:
+
+  /@defer/client@1.13.0:
+    resolution: {integrity: sha512-UAnfRdsn9fwCP2DuZbRnENMY7FsJDt0bw9SBLJEcB6qX+kjvWQbgO/nvTzY8l7hyAJm755pyOH/Anc1nGz6wPg==}
+    engines: {node: '>=18'}
+    dependencies:
+      parse-duration: 1.1.0
+    dev: false
+
+  /parse-duration@1.1.0:
+    resolution: {integrity: sha512-z6t9dvSJYaPoQq7quMzdEagSFtpGu+utzHqqxmpVWNNZRIXnvqyCvn9XsTdh7c/w0Bqmdz3RB3YnRaKtpRtEXQ==}
+    dev: false
+
+  /typescript@5.2.2:
+    resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    dev: true
