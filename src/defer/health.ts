@@ -4,19 +4,19 @@ const health = async () => {
   const targets = [
     {
       name: "API",
-      base: "https://flamrdevs.deno.dev",
+      host: "flamrdevs.deno.dev",
     },
     {
       name: "Image",
-      base: "https://flamrdevs.cyclic.app",
+      host: "flamrdevs.cyclic.app",
     },
     {
       name: "View",
-      base: "https://flamrdevs.workers.dev",
+      host: "view.flamrdevs.workers.dev",
     },
   ];
 
-  const action = async ({ name, base }: (typeof targets)[number]) => {
+  const action = async ({ name, host }: (typeof targets)[number]) => {
     const data = {
       name,
       ok: false,
@@ -24,7 +24,7 @@ const health = async () => {
 
     try {
       console.time(name);
-      data.ok = (await fetch(`${base}/health`)).ok;
+      data.ok = (await fetch(`https://${host}/health`)).ok;
       console.timeEnd(name);
     } catch (error) {}
 
