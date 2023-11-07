@@ -1,16 +1,26 @@
 import { defer } from "@defer/client";
 
 const health = async () => {
+  const now = Date.now();
+
+  const DATA: {
+    time: number;
+    items: [string, number, number][];
+  } = {
+    time: now,
+    items: [],
+  };
+
   const action = async (name: string, host: string) => {
     let status: number = 0;
-
-    const now = Date.now();
 
     try {
       status = (await fetch(`https://${host}/health`)).status;
     } catch (error) {
     } finally {
-      console.log(`[${name}] ${status} ${Date.now() - now}`);
+      const ms = Date.now() - now;
+      console.log(`[${name}] ${status} ${ms}`);
+      DATA.items.push([name, status, ms]);
     }
   };
 
@@ -30,6 +40,19 @@ const health = async () => {
       },
     ].map(({ name, host }) => action(name, host))
   );
+
+  try {
+    await fetch("https://status.flamrdevs.vercel.app/api/health", {
+      method: "POST",
+      body: JSON.stringify(DATA),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.error("[status] ok");
+  } catch (error) {
+    console.error("[status] failed");
+  }
 };
 
 export default defer.cron(health, "*/15 * * * *");
