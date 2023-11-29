@@ -8,6 +8,7 @@
     "@defer/client": "^1.13.0"
   },
   "devDependencies": {
+    "@types/node": "^20.10.0",
     "typescript": "^5.2.2"
   }
 }
