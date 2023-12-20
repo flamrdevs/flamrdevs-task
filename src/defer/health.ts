@@ -4,42 +4,31 @@ const health = async () => {
   const now = Date.now();
 
   const DATA: {
-    time: number;
-    items: [string, number, number][];
+    t: number;
+    r: Record<string, [number, number]>;
   } = {
-    time: now,
-    items: [],
+    t: now,
+    r: {},
   };
 
   const action = async (name: string, host: string) => {
-    let status: number = 0;
+    let status: number = 500;
 
     try {
       status = (await fetch(`https://${host}/health`)).status;
     } catch (error) {
     } finally {
       const ms = Date.now() - now;
+      DATA.r[name] = [status, ms];
       console.log(`[${name}] ${status} ${ms}`);
-      DATA.items.push([name, status, ms]);
     }
   };
 
-  await Promise.all(
-    [
-      {
-        name: "API",
-        host: "flamrdevs.deno.dev",
-      },
-      {
-        name: "Image",
-        host: "flamrdevs.cyclic.app",
-      },
-      {
-        name: "View",
-        host: "view.flamrdevs.workers.dev",
-      },
-    ].map(({ name, host }) => action(name, host))
-  );
+  await Promise.all([
+    action("API", "flamrdevs.deno.dev"),
+    action("Image", "flamrdevs.cyclic.app"),
+    action("View", "view.flamrdevs.workers.dev"),
+  ]);
 
   try {
     await fetch("https://status.flamrdevs.vercel.app/api/health", {
